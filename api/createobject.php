@@ -1,4 +1,6 @@
 <?php 
+echo json_encode($_FILES);
+die();
 include 'db.php';
 session_start();
 if(!isset($_SESSION['loggedin'])){
