@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/router.php';
 
-get("/login", 'views/login.php');
-get("/logout", "api/logout.php");
+get("/admin/login", 'views/login.php');
+get("/admin/logout", "api/logout.php");
 get("/admin/dashboard", "views/admin.php");
 get('/admin/editobject/$id', 'views/editobject.php');
 get('/admin/editcategory/$id', 'views/editcategory.php');
@@ -16,8 +16,9 @@ get('/admin/deletecategory/$id', 'api/deletecategory.php');
 get("/archive/listview", "views/listview.php");
 get("/archive/imageview", "views/imageview.php");
 get('/admin/deletefile/$id', 'api/deletefile.php');
+get('/objekt/$uniktid', 'views/object.php');
 
-post("/login", "api/login.php");
+post("/admin/login", "api/login.php");
 post('/admin/createobject', 'api/createobject.php');
 post('/admin/createcategory', 'api/createcategory.php');
 post('/admin/addfiletoobject', 'api/addfiletoobject.php');
