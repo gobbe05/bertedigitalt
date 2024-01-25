@@ -1,11 +1,8 @@
 <?php 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 include(dirname(__DIR__) . '/api/db.php');
 session_start();
 if(!isset($_SESSION['loggedin'])){
-    header('Location: /login');
+    header('Location: /admin/login');
     exit();
 }
 
@@ -20,8 +17,13 @@ if(!isset($_FILES["image"]["name"][0])){
     exit();
 }
 $id = $_GET['id'];
+
+$sql = "SELECT * FROM Objekt WHERE Id=? LIMIT 1";
+$object = $mysqli -> execute_query($sql, [$id]) -> fetch_object();
+
+$fileName = "berte-museum-" . $object -> UniqueId . "-" . basename($_FILES["image"]["name"]);
 $target_dir = "uploads/";
-$target_file = $target_dir . basename($_FILES["image"]["name"]);
+$target_file = $target_dir . $fileName;
 $fileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
 // Check if file already exists
@@ -32,9 +34,9 @@ if (!file_exists($target_file)) {
       exit();
     }
 }
-$sql = "INSERT INTO Bilder (filePath, ObjektID) VALUES (?, ?)";
+$sql = "INSERT INTO Image (Image, Object_Id, Name) VALUES (?, ?, ?)";
 
-if(!$mysqli -> execute_query($sql, [$target_file, $id])){
+if(!$mysqli -> execute_query($sql, ["/".$target_file, $id, $fileName])){
     header('Location: /admin/dashboard?error=There was an error adding the file to the database!');
     $mysqli -> close();
     exit();
