@@ -1,45 +1,33 @@
 <?php 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-function createImageCopy($file, $folder, $newWidth){
-	
-	//$file source : (original) path filename
-	//$folder : desired output folder
-	//$newWidth:the desired output width(height will scale porportionally)
-	echo $file;
-	
-	list($width, $height) = getimagesize($file);
-	$imgRatio = $width/$height;
-	$newHeight = $newWidth/$imgRatio;
+function createImageCopy($file, $folder, $newFileName){
 
-	//echo "width: $width | height : $height | ratio : $imgRatio";
-	
-	//create image functions:
-
-	//$thumb = imagecreatetruecolor($newWidth, $newHeight);
-	//$source = imagecreatefromjpeg($file);
-
-	if($_FILES['image']['type'] =="image/jpeg"){
-		$thumb = imagecreatetruecolor($newWidth, $newHeight);
-		$source = imagecreatefromjpeg($file);
-	}else if($_FILES['image']['type'] == "image/png"){
-		$thumb = imagecreatetruecolor($newWidth, $newHeight);
-		$source = imagecreatefrompng($file);
-	}
-	   
-	if($newFileName = $folder.$_FILES['image']['name']){
-		imagejpeg($thumb,$newFileName,80);
-	}else if($newFileName = $folder.$_FILES['image']['name']){
-		imagepng($thumb,$newFileName,8);
-	}
-
-	
-	imagedestroy($source);
-	imagedestroy($thumb);
-	
-
-
+    $filename = $file;
+    list($width, $height) = getimagesize($_SERVER["DOCUMENT_ROOT"] . $filename);
+    
+    $mime = image_type_to_mime_type(exif_imagetype($_SERVER["DOCUMENT_ROOT"] . $file));
+    
+    if($mime == "image/jpeg") {
+        $source = imagecreatefromjpeg($_SERVER["DOCUMENT_ROOT"] . $filename);
+    } else if($mime == "image/png") {
+        $source = imagecreatefrompng($_SERVER["DOCUMENT_ROOT"] . $filename);
+    } else {
+        header('Location: /admin/dashboard?error=Only png and jpeg allowed');
+        exit();
+    }
+    
+    $newwidth = $width/5;
+    $newheight = $height/5;
+    
+    $destination = imagecreatetruecolor($newwidth, $newheight);
+    imagecopyresampled($destination, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+    
+    if($mime == "image/jpeg") {
+        imagejpeg($destination, $folder.$newFileName, 50);
+    } else if($mime == "image/png") {
+        imagepng($destination, $folder.$newFileName, 8);
+    }
+    
+    
 }//end of createImageCopy
 
 ?>
