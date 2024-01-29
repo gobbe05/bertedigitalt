@@ -13,10 +13,10 @@ get('/admin/createobject/$error', "views/createobject.php");
 get('/admin/createcategory', 'views/createcategory.php');
 get('/admin/deleteobject/$id', 'api/deleteobject.php');
 get('/admin/deletecategory/$id', 'api/deletecategory.php');
-get("/archive/listview", "views/listview.php");
-get("/archive/imageview", "views/imageview.php");
+get("/admin/listview", "views/listview.php");
+get("/admin/imageview", "views/imageview.php");
 get('/admin/deletefile/$id', 'api/deletefile.php');
-get('/objekt/$uniktid', 'views/object.php');
+get('/digitalt-arkiv/objekt', 'views/object.php');
 
 post("/admin/login", "api/login.php");
 post('/admin/createobject', 'api/createobject.php');

@@ -3,7 +3,7 @@
 include(dirname(__DIR__) . '/api/db.php');
 session_start();
 if(!isset($_SESSION['loggedin'])){
-    header('Location: /login');
+    header('Location: /admin/login');
     $mysqli -> close();
     exit();
 }

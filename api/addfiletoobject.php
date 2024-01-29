@@ -1,5 +1,7 @@
 <?php 
 include(dirname(__DIR__) . '/api/db.php');
+include(dirname(__DIR__) . '/api/createimagecopy.php');
+
 session_start();
 if(!isset($_SESSION['loggedin'])){
     header('Location: /admin/login');
@@ -32,6 +34,10 @@ if (!file_exists($target_file)) {
       header('Location: /admin/dashboard?error=File upload failed!');
       $mysqli -> close();
       exit();
+    } else {
+        createImageCopy($target_file, "/uploads/thumbnails/", 150);
+        echo "test";
+        exit();
     }
 }
 $sql = "INSERT INTO Image (Image, Object_Id, Name) VALUES (?, ?, ?)";

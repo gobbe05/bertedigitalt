@@ -2,7 +2,7 @@
 include(dirname(__DIR__) . '/api/db.php');
 session_start();
 if(!isset($_SESSION['loggedin'])){
-    header('Location: /login');
+    header('Location: /admin/login');
     $mysqli -> close();
     exit();
 }
@@ -16,14 +16,17 @@ $id = $_GET['id'];
 $sql = "SELECT * FROM Objekt WHERE Id=? LIMIT 1";
 $object = $mysqli -> execute_query($sql, [$id]) -> fetch_assoc();
 
-$sql = "SELECT * FROM Kategori";
+$sql = "SELECT * FROM Kategorier";
 $categories = $mysqli -> query($sql) -> fetch_all(MYSQLI_ASSOC);
 ?>
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-<form class="d-flex flex-column gap-1" action="/admin/editobject?id=<?php echo $object['Id']; ?>" method="post">
-    <h3>Edit Object</h3>  
+<form class="d-flex flex-column gap-3 mx-auto my-5" style="width: 768px;" action="/admin/editobject?id=<?php echo $object['Id']; ?>" method="post">
+  <div class="d-flex">
+    <a href="/admin/dashboard" class="btn btn-dark d-flex align-items-center gap-1 my-2">Back <span class="material-symbols-outlined">arrow_back</span></a>
+  </div>  
+  <h3>Edit Object</h3>  
     <div class="form-floating">
         <input class="form-control" type="text" value="<?php echo $object['Objekt']; ?>" name="objekt" id="objekt">
         <label class="form-label" for="objekt">Namn</label>
@@ -47,6 +50,10 @@ $categories = $mysqli -> query($sql) -> fetch_all(MYSQLI_ASSOC);
     <div class="form-floating">
         <input class="form-control" type="text" name="givare" id="givare" value="<?php echo $object['Givare'];?>">
         <label class="form-label" for="givare">Givare</label>
+    </div>
+    <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="givarepublik" id="givarepublik" <?php if($object['GivarePublik'] == 1) {echo "checked";} ?>>
+          <label class="form-check-label" for="givarepublik">Publik Givare?</label>
     </div>
     <div class="form-floating">
         <input class="form-control" type="text" name="notering" id="notering" value="<?php  echo $object['Notering']; ?>">
@@ -83,3 +90,18 @@ $categories = $mysqli -> query($sql) -> fetch_all(MYSQLI_ASSOC);
     </div>
     <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modal">Submit</button>
 </form>
+<div class="mx-5 my-2 d-flex">
+<?php echo "<a href='/admin/addfiletoobject/?id=". $object['Id'] ."' class='btn btn-success text-white d-flex align-items-center gap-1 text-nowrap'>Add File <span class='material-symbols-outlined'>add</span></a>"; ?>
+</div>
+<div id="accordion" class="accordion mx-5 mb-5">
+  <div class="accordion-item">
+      <h2 class="accordion-header">
+          <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseImages">Images</button>
+      </h2>
+      <div id="collapseImages" class="accordion-collapse collapse" data-bs-parent="#accordion">
+          <div class="accordion-body">
+              <?php include dirname(__DIR__) . '/views/components/admin/images.php'; ?>
+          </div>
+      </div>
+  </div>
+</div>
