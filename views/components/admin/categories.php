@@ -1,22 +1,22 @@
 <?php 
 include(dirname(dirname(dirname(__DIR__))) . '/api/db.php');
 if(!isset($_SESSION['loggedin'])){
-    header('Location: /login');
+    header('Location: /admin/login');
     exit();
 }
 
 // Kategori
-$sql = "SELECT * FROM Kategori";
+$sql = "SELECT * FROM Kategorier";
 $categories = $mysqli -> query($sql) -> fetch_all(MYSQLI_ASSOC);
 $mysqli -> close();
 
 ?>
-
 <div class="d-flex">
-    <a href="/admin/createcategory" class="btn btn-success ms-auto d-flex justify-content-center align-items-center">New <span class="material-symbols-outlined">add</span></a>
+    <a href="/admin/createcategory" class="btn btn-success my-2 d-flex justify-content-center align-items-center">New <span class="material-symbols-outlined">add</span></a>
 </div>
 <table class="table">
-    <thead>
+    
+  <thead>
         <tr>
             <th scope="col">#</th>
             <th>Namn</th>
@@ -31,7 +31,7 @@ $mysqli -> close();
                 echo "<tr>";
                     echo "<th scope='row'>". $category['Id'] ."</th>";
                     echo "<td>". $category['Kategori'] ."</td>";
-                    echo "<td scope='row'>". $category['UniktID'] ."</td>";
+                    echo "<td scope='row'>". $category['Unikt Id'] ."</td>";
                     echo "<td class='d-flex gap-1'>
                             <a href='/admin/editcategory/?id=". $category['Id'] ."' class='ms-auto btn btn-warning text-white d-flex align-items-center gap-1'>Edit <span class='material-symbols-outlined'>edit</span></a>
                             <button type='button' class='btn btn-danger d-flex align-items-center gap-1' data-bs-toggle='modal' data-bs-target='#categorymodal". $category['Id'] ."'>Delete <span class='material-symbols-outlined'>delete</span></button>

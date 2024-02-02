@@ -1,37 +1,42 @@
 <?php 
 include(dirname(dirname(dirname(__DIR__))) . '/api/db.php');
 if(!isset($_SESSION['loggedin'])){
-    header('Location: /login');
+    header('Location: /admin/login');
     exit();
 }
 
-// Kategori
-$sql = "SELECT * FROM Bilder ORDER BY ObjektID";
-$files = $mysqli -> query($sql) -> fetch_all(MYSQLI_ASSOC);
-$mysqli -> close();
-
+if(isset($_GET['id'])){
+  $id = $_GET['id'];
+  $sql = "SELECT * FROM Image WHERE Object_Id=? ORDER BY Object_Id";
+  $files = $mysqli -> execute_query($sql, [$id]) -> fetch_all(MYSQLI_ASSOC);
+} else {
+  $sql = "SELECT * FROM Image ORDER BY Object_Id";
+  $files = $mysqli -> query($sql) -> fetch_all(MYSQLI_ASSOC);
+}
+if(count($files) == 0) {exit();}
 ?>
-
-
 <table class="table">
     <thead>
         <tr>
             <th scope="col">#</th>
-            <th>File Path</th>
-            <th>Object ID</th>
-            <th></th>
+            <th class="text-nowrap">File Path</th>
+            <th class="text-nowrap">Object ID</th>
+            <th class="text-nowrap">Object Name</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         <?php 
             foreach ($files as $file) {
+                $sql = "SELECT * FROM Objekt WHERE Id=? LIMIT 1";
+                $object = $mysqli -> execute_query($sql, [$file['Object_Id']]) -> fetch_object();
                 echo "<tr>";
                     echo "<th scope='row'>". $file['Id'] ."</th>";
-                    echo "<td>". $file['filePath'] ."</td>";
-                    echo "<td scope='row'>". $file['ObjektID'] ."</td>";
+                    echo "<td>". $file['Image'] ."</td>";
+                    echo "<td scope='row'>". $file['Object_Id'] ."</td>";
+                    echo "<td scope='row'>". $object->Objekt ."</td>";
                     echo "<td class='d-flex gap-1'>
-                            <a href='/". $file['filePath'] ."' class='btn btn-primary ms-auto'>Show File</a>
+                            <a target='_blank' href='". $file['Image'] ."' class='text-nowrap btn btn-primary ms-auto'>Show File</a>
                             <button type='button' class='btn btn-danger d-flex align-items-center gap-1' data-bs-toggle='modal' data-bs-target='#filemodal". $file['Id'] ."'>Delete <span class='material-symbols-outlined'>delete</span></button>
                             <!-- Modal -->
                             <div class='modal fade' id='filemodal". $file['Id'] ."' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>

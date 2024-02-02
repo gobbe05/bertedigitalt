@@ -2,14 +2,14 @@
 include(dirname(__DIR__) . '/api/db.php');
 session_start();
 if(!isset($_SESSION['loggedin'])){
-    header('Location: /login');
+    header('Location: /admin/login');
     exit();
 }
 
 $kategori = $_POST['kategori'];
 $uniktid = $_POST['uniktid'];
 
-$sql = "INSERT INTO Kategori (Kategori, UniktID)
+$sql = "INSERT INTO Kategorier (Kategori, `Unikt Id`)
         VALUES (?,?)";
 $stmt = $mysqli -> prepare($sql);
 $stmt -> bind_param("ss", $kategori, $uniktid);

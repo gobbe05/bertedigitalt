@@ -1,8 +1,11 @@
 <?php 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 include(dirname(__DIR__) . '/api/db.php');
 session_start();
 if(!isset($_SESSION['loggedin'])){
-    header('Location: /login');
+    header('Location: /admin/login');
     exit();
 }
 if(!isset($_POST) || !isset($_POST['uniktid']) || !isset($_POST['kategori'])){
@@ -19,7 +22,7 @@ $id = $_GET['id'];
 $uniktid = $_POST['uniktid'];
 $kategori = $_POST['kategori'];
 
-$sql = "UPDATE Kategori SET Kategori=?, UniktID=? WHERE Id=?";
+$sql = "UPDATE Kategorier SET Kategori=?, `Unikt Id`=? WHERE Id=?";
 $mysqli -> execute_query($sql, [$kategori, $uniktid, $id]);
 
 header('Location: /admin/dashboard?message=Category was successfully changed!');

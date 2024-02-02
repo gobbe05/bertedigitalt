@@ -2,7 +2,7 @@
 include(dirname(__DIR__) . '/api/db.php');
 session_start();
 if(!isset($_SESSION['loggedin'])){
-    header('Location: /login');
+    header('Location: /admin/login');
     exit();
 }
 
@@ -13,7 +13,7 @@ if(!isset($_GET['id'])){
 }
 
 $id = $_GET['id'];
-$sql = "DELETE FROM Bilder WHERE Id=?";
+$sql = "DELETE FROM Image WHERE Id=?";
 if(!$mysqli -> execute_query($sql, [$id])) {
     header("Location: /admin/dashboard?There was an error deleting the image!");
     $mysqli -> close();

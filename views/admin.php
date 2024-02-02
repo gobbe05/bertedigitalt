@@ -33,21 +33,21 @@ $imagecount = $mysqli -> query($sql) -> fetch_assoc()['COUNT(*)'];
         </div>
         <div class="accordion-item">
             <h2 class="accordion-header">
-                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseCategories">Categories</button>
-            </h2>
-            <div id="collapseCategories" class="accordion-collapse collapse" data-bs-parent="#accordion">
-                <div class="accordion-body">
-                    <?php include dirname(__DIR__) . '/views/components/admin/categories.php'; ?>
-                </div>
-            </div>
-        </div>
-        <div class="accordion-item">
-            <h2 class="accordion-header">
                 <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseImages">Images</button>
             </h2>
             <div id="collapseImages" class="accordion-collapse collapse" data-bs-parent="#accordion">
                 <div class="accordion-body">
                     <?php include dirname(__DIR__) . '/views/components/admin/images.php'; ?>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseCategories">Categories</button>
+            </h2>
+            <div id="collapseCategories" class="accordion-collapse collapse" data-bs-parent="#accordion">
+                <div class="accordion-body">
+                    <?php include dirname(__DIR__) . '/views/components/admin/categories.php'; ?>
                 </div>
             </div>
         </div>

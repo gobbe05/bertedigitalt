@@ -1,8 +1,7 @@
-<?php
-$mysqli = new mysqli("sql11.freesqldatabase.com","sql11677398","jGVphLaFgW", "sql11677398");
+<?php 
 
-if ($mysqli -> connect_errno) {
-  echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
-  exit();
-}
-?>
+$dbhost = "bertemuseum-digitalt.se.mysql";
+$dbuser = "bertemuseum_digitalt_sedbobjekt";
+$dbpass = "Karatekr05";
+$db = "bertemuseum_digitalt_sedbobjekt";
+$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $db) or die ("Connect failed %\n". $conn -> error);

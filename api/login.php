@@ -2,13 +2,13 @@
 
 session_start();
 if(!isset($_POST['username']) || !isset($_POST['password'])){
-    header('Location: /login?error=Please fill in all the required credentials!');
+    header('Location: /admin/login?error=Please fill in all the required credentials!');
     exit();
 }
-if($_POST['username'] == "admin" && $_POST['password'] == "admin"){
+if($_POST['username'] == "kattirask" && $_POST['password'] == "Ingeland2019?"){
     $_SESSION['loggedin'] = true;
     header('Location: /admin/dashboard');
     exit();
 }
-header('Location: /login?error=Username and passwords does not match!')
+header('Location: /admin/login?error=Username and passwords does not match!')
 ?>
